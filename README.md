@@ -4,8 +4,11 @@ Sensing Image Semantic Segmentation'](https://ieeexplore.ieee.org/stamp/stamp.js
 
 ## Environment
 conda create -n xxx python=3.7 -y
+
 conda activate xxx
+
 pip install -r requirements.txt
+
 ###requirements.txt
 ```bash
 torchviz
