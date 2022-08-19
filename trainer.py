@@ -81,7 +81,7 @@ def trainer_synapse(args, model, snapshot_path):
     # optimizer = optim.Adam(model.parameters(), lr=base_lr, betas=(0.9, 0.999))
     writer = SummaryWriter(snapshot_path + '/log')
     '''
-    snapshot ='/root/data/Try/Try3-62/networks/model/TU_02_Vai_wu_256256/TU_R50-ViT-B_16_skip3_epo150_bs8_256/epoch_79.pth'
+    snapshot ='x'
     checkpoint = torch.load(snapshot, map_location='cpu')
     model.load_state_dict(checkpoint['model'])
     optimizer.load_state_dict(checkpoint['optimizer'])
@@ -110,15 +110,13 @@ def trainer_synapse(args, model, snapshot_path):
             image_batch = image_batch.numpy()
             image_batch = image_batch.transpose([0, 3, 1, 2])
 
-            # image_batch torch.Size([12, 3, 256, 256])
             image_batch = torch.from_numpy(image_batch)
             image_batch = image_batch.cuda()
             outputs = model(image_batch)
 
             loss_ce = ce_loss(outputs, label_batch[:].long())
-            # lovasz_loss=lovasz_softmax(outputs, label_batch)##lovasz_softmax_flat(probas, labels,
             loss_dice = dice_loss(outputs, label_batch, softmax=True)
-            loss = loss_ce+ 1.5 * loss_dice  # loss
+            loss = 0.5 * loss_ce+ 0.5 * loss_dice  # loss
             #print('9999999999999',outputs.shape)
             epoch_loss = epoch_loss + loss
             miou=cal(outputs,label_batch)
@@ -138,7 +136,7 @@ def trainer_synapse(args, model, snapshot_path):
             #writer.add_scalar('info/miou', miou, iter_num)
 
             logging.info('iteration %d : lr : %f, loss : %f, loss_ce: %f, loss_dice: %f' % (iter_num, lr_, loss.item(), loss_ce.item(), loss_dice.item()))
-            #logging.info('iteration %d : lr : %f, loss : %f, loss_ce: %f' % (iter_num, lr_, loss.item(), loss_ce.item()))
+            
             if iter_num % 1 == 0:
                 image = image_batch[0, :, :, :]
                 image = (image - image.min()) / (image.max() - image.min())
