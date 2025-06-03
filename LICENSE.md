@@ -1,0 +1,1 @@
+The code is released under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License for NonCommercial use only. Any commercial use should get formal permission first (Email: hhex0910@GMAIL.COM).
